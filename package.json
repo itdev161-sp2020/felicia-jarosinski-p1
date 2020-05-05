@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r esm server.js",
     "server": "nodemon -r esm server.js"
-
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,7 @@
     "bcryptjs": "^2.4.3",
     "config": "^3.3.1",
     "esm": "^3.2.25",
+    "express": "^4.17.1",
     "express-validator": "^6.4.1",
     "mongoose": "^5.9.12"
   },
