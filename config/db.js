@@ -1,16 +1,17 @@
-import mongoose from "mongoose";
-import config from "config";
+import mongoose from 'mongoose';
+import config from 'config';
 
 //get the connection string
-const db = config.get("mongoURI");
+const db = config.get('mongoURI');
 
 //connect to MongoDB
 const connectDatabase = async () => {
   try {
     await mongoose.connect(db, {
       useUnifiedTopology: true,
+      useCreateIndex: true
     });
-    console.log("Connected to MongoDB");
+    console.log('Connected to MongoDB');
   } catch (error) {
     console.error(error.message);
     //exit with failure code
