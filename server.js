@@ -120,14 +120,14 @@ app.post(
         if (!user){
           return res
           .status(400)
-          .json({errors: [{message: 'Invalid email or password'}] });
+          .json({errors: [{msg: 'Invalid email or password'}] });
         }
         //check password
         const match = await bcrypt.compare(password, user.password);
         if (!match){
           return res
           .status(400)
-          .json({ errors: [{ message: 'Invalid email or password'}] });
+          .json({ errors: [{ msg: 'Invalid email or password'}] });
         }
         //generate and return a JWT token
         returnToken(user, res);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 
@@ -92,7 +92,7 @@ const Register =({authenticateUser}) =>{
             onChange={e => onChange(e)} />
         </div>
         <div>
-        <button onClick={() => register()}>Register</button>
+        <button onClick={() => registerUser()}>Register</button>
         </div>
         <div>
             {errors && errors.map(error =>

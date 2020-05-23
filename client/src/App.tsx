@@ -86,7 +86,7 @@ class App extends React.Component {
                 <div>{data}</div>
               </React.Fragment> :
               <React.Fragment>
-                Please register or Login
+                Please Register or Login
               </React.Fragment>
               }
             </Route>
