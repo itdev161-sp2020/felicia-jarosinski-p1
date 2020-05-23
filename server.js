@@ -8,6 +8,7 @@ import config from 'config';
 import User from './models/User';
 import Post from './models/Post';
 import auth from './middleware/auth';
+//import path from 'path';
 
 //initialize express application
 const app = express();
@@ -148,7 +149,8 @@ app.post(
   '/api/posts',
   [
     auth,
-    [check('title', 'Title text is required')
+    [
+      check('title', 'Title text is required')
     .not()
     .isEmpty(),
   check('body', 'Body text is required')
@@ -186,7 +188,7 @@ app.post(
  * @route GET api/posts
  * @desc GET posts
  */
-app.get('/api/posts', auth async (req, res)=>{
+app.get('/api/posts', auth, async (req, res)=>{
   try {
     const posts = await Post.find().sort({date: -1});
 
@@ -196,6 +198,85 @@ app.get('/api/posts', auth async (req, res)=>{
     res.status(500).send('Server error');
     }
 });
+/**
+ * @route GET api/posts
+ * @desc GET post
+ */
+app.get('/api/posts/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+  //make sure the post was found
+  if(!post){
+    return res.status(404).json({ msg: 'Post not found'});
+  }
+
+  res.json(post);
+  }catch (error){
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
+/**
+ * 
+ * @route DELETE api/posts/:id
+ * @desc Delete a post
+ */
+app.delete('/api/posts/:id', auth, async(req, res) => {
+  try{
+    const post = await Post.findById(req.params.id);
+
+    //make sure the post was found
+    if (!post){
+      return res.status(404).json({msg: 'Post not found'});
+    }
+
+    //make sure the request user created the post
+    if (post.user.toString() !== req.user.id){
+      return res.status(401).json({ msg: 'User not authorized'});
+    }
+
+    await post.remove();
+
+    res.json({msg: 'Post removed'});
+  }catch (error){
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
+
+/**
+ * 
+ * @route PUT api/posts/:id
+ * @desc Update a post
+ */
+app.put('/api/posts/:id', auth, async(req, res)=> {
+  try{
+    const {title, body}=req.body;
+    const post = await Post.findById(req.params.id);
+
+    //make sure the post was found
+    if(!post){
+      return res.status(404).json({msg: 'Post not found'});
+    }
+
+    //make sure the request user created the post
+    if(post.user.toString() !== req.user.id){
+      return res.status(401).json({msg: 'User not authorized'});
+    }
+
+    //update the post and return 
+    post.title = title || post.title;
+    post.body = body || post.body;
+
+    await post.save();
+    res.json(post);
+  }catch (error){
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
+
 const returnToken = (user, res) => {
   const payload ={
     user: {
