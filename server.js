@@ -33,11 +33,11 @@ app.get('/', (req, res) =>
 app.get('/api/', (req, res) => res.send('http get request sent to api'));
 
 /**
- * @route POST api/users
+ * @route POST api/user
  * @desc Register user
  */
 app.post(
-  '/api/users',
+  '/api/user',
   [
     check('name', 'Please enter your name')
     .not()
@@ -87,7 +87,7 @@ app.post(
 );
 /**
  * @route GET api/auth
- * @desc Authenticate user
+ * @desc Authorize 
  */
 app.get('/api/auth', auth, async(req, res) =>{
   try{
